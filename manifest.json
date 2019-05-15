@@ -1,0 +1,15 @@
+{
+
+  "manifest_version": 2,
+  "name": "securedrop-e2e",
+  "version": "0.1",
+  "description": "Utility plugin for encrypting files. Takes a key and file as input and outputs an encrypted file.",
+
+   "content_scripts": [
+    {
+      "matches": ["*://*.mozilla.org/*"],
+      "js": ["src/securedrop-e2e.js"]
+    }
+  ]
+
+}
