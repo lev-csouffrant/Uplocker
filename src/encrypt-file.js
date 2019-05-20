@@ -3,60 +3,6 @@
 -----END PGP PUBLIC KEY BLOCK-----`;
 */
 
-var pubkey =
-`-----BEGIN PGP PUBLIC KEY BLOCK-----
-Version: BCPG C# v1.6.1.0
-
-mQENBFzd7DoBCADehz+DG39YNnPXQqkEuznShqeNGbPxkPYjeQ2mz/EF047r0Nr4
-NqUZ/hkGgQqX+o95nC3ckPCHB/nbRl4ebT+UXr8ewmPiFCbnmULcYtsSB2gC7KmH
-YHxp2WBA9Eqc65X9VgJ6iUlJ4KOSHxMD9wOJ35wpmQkIu8wFWgfs3RZ2WYsTjLar
-3NpelH5IUcnMM1XEPjQCslF39tt0bqp42Fy2wYT7j9wPDNbuGA098Y+oKVTIhllL
-1k61zN+MM+xbulRjqFEJEKwevWdiiHC8r2bQMneQECOirx2u9Ivbm9T+YC3AnodG
-HagRf1yjfDjqxK746iJD3YEBNcnyf+Kh8NdvABEBAAG0AIkBHAQQAQIABgUCXN3s
-OgAKCRAvBtQ+EdEqN9orB/0cJN7fZ7xu9jo/mwjbtxq3yMlo0P/VViYzwNEokfU3
-bpV7mPkdq3o5dXTRHOyepWaZDGO6XmsulP9mtNqMQfdYC0xpfEkcmqTviiLgGfrv
-zawWn7q+rousHuHaxEv0rwIaf2OoBXxzsPEF3afWWA6nz0gmtv/fmFaHdAhC+d9k
-C17hnBgga9YCVq/Q2pEeRXyWC7OrhKIfl7Vj/8Vf2Uto4ZH3RFmfdVUNPtNt4m/5
-    +Ed2CTR2ur4KujQc1cjSoA2fZxzHi43DRJuxXgpGrn/EdWLDlajDyLZrUyHCyTwi
-PM3umaFmNHixaWbF8OZcyrfNegwbJS3tN4C0Gv9HLQJ6
-    =RnMS
------END PGP PUBLIC KEY BLOCK-----`;
-
-var privkey =
-`-----BEGIN PGP PRIVATE KEY BLOCK-----
-Version: BCPG C# v1.6.1.0
-
-lQOsBFzd7DoBCADehz+DG39YNnPXQqkEuznShqeNGbPxkPYjeQ2mz/EF047r0Nr4
-NqUZ/hkGgQqX+o95nC3ckPCHB/nbRl4ebT+UXr8ewmPiFCbnmULcYtsSB2gC7KmH
-YHxp2WBA9Eqc65X9VgJ6iUlJ4KOSHxMD9wOJ35wpmQkIu8wFWgfs3RZ2WYsTjLar
-3NpelH5IUcnMM1XEPjQCslF39tt0bqp42Fy2wYT7j9wPDNbuGA098Y+oKVTIhllL
-1k61zN+MM+xbulRjqFEJEKwevWdiiHC8r2bQMneQECOirx2u9Ivbm9T+YC3AnodG
-HagRf1yjfDjqxK746iJD3YEBNcnyf+Kh8NdvABEBAAH/AwMCEVAaMxnHct9ga3zo
-MIFUhYOr/NRi4Vn5IWc0ePKFCeECifI0hcuPLqqHDcvQED6J70Fv+wm3PLakChRq
-D+WjPvNrmrWgTeDGld/sAiJAJS7bQESIOvq4KNuzAkGjcvuzDzV2UdLqS8A56Fmw
-R/9UhE6RPGpzA1JuLDjOgWJraNBDw0k3CXO45+WGIsGsWJIEVK89cXfsx4gQZTHB
-o+v3a8ABeNpyXAXk9w08c5g6HyVJfTI23Sq6mF6NMJilU3XYnSKVConrVQmixhkP
-zqt2Bs3v9yabnBKMU4OGBUGJAGg79DFZH3jiggO5x1QIerx1pNGDkxixbdfOVNLS
-z6nfQddem/oB+1D0QV7xzgab69XVuYlqeqn9Z2ZIMBIOsYIup5a04SdPB7l+kng7
-lBtflr9T0+2eA77/Z5cP6EvgCk2ZJd/ldJL5sa1LzJNSogKUDkoJUUx7c91cwq/m
-uC+Pe4icij4CkI0Aw9FpkX1jyZkZGcUcj8IQlf3Ip6A/pOQEMkcocEiUgOU1m5MP
-NO7N6Hi8aPt1uMp3q9qexm+m5PMHTWRxXcMALp55kFFfUnWeAwzm9jo+So4IEEj7
-JUlumBPYDwKU5P9M3Z3Fiek7qxKy3OnTAJuBS30TaG3Vpn7hBzmWwxBFHVnuQDMt
-ZxT7lyETsDjOuh+9XU/Cy1QdrxVWOuOtr2g2rjHz7uPvkDOnx9lTimXrWmUZVJqy
-o9KIr7IGIZnmsQ2bmypipT5O7FFGc3X+sGLcWtNuPPuse4G7EpTal41NexRQbzc/
-ahcSyOzVFcMQyhDY6xp55QZ8R9KHdC5o4dYd3LcoJwn7yBL1pCL6UMtMy5WBIEI9
-eO7pEGYpSpu6cSx5b/i/+DEPm3i/JubVIayskjA1TrQAiQEcBBABAgAGBQJc3ew6
-AAoJEC8G1D4R0So32isH/Rwk3t9nvG72Oj+bCNu3GrfIyWjQ/9VWJjPA0SiR9Tdu
-lXuY+R2rejl1dNEc7J6lZpkMY7peay6U/2a02oxB91gLTGl8SRyapO+KIuAZ+u/N
-rBafur6ui6we4drES/SvAhp/Y6gFfHOw8QXdp9ZYDqfPSCa2/9+YVod0CEL532QL
-XuGcGCBr1gJWr9DakR5FfJYLs6uEoh+XtWP/xV/ZS2jhkfdEWZ91VQ0+023ib/n4
-R3YJNHa6vgq6NBzVyNKgDZ9nHMeLjcNEm7FeCkauf8R1YsOVqMPItmtTIcLJPCI8
-ze6ZoWY0eLFpZsXw5lzKt816DBslLe03gLQa/0ctAno=
-=nlMP
------END PGP PRIVATE KEY BLOCK-----`;
-
-
-/*
 // For now we are using the default key from openpgpjs
 var pubkey =
   ['-----BEGIN PGP PUBLIC KEY BLOCK-----',
@@ -122,7 +68,8 @@ var privkey =
   '/YZly4ioND2tdazj17u2rU2dwtiHPe1iMqGgVMoQirfLc+k=',
   '=lw5e',
    '-----END PGP PRIVATE KEY BLOCK-----'].join('\n');
-*/
+
+
 const passphrase = 'hello world';
 
 // Takes a Uint8Array encoded file and returns it encrypted as an Uint8Array
@@ -130,13 +77,10 @@ const passphrase = 'hello world';
 async function encryptFile(input_file)
 {
     var encrypted, options;
-    await openpgp.initWorker({ path:'openpgp.worker.js' });
 
     options = {
-        //message: openpgp.message.fromBinary(input_file),
-        message: openpgp.message.fromText("test"), //openpgp.message.fromBinary(new Uint8Array([0x01, 0x01, 0x01])),
-        //publicKeys: (await openpgp.key.readArmored(pubkey)).keys,
-        passwords: ['secret'],
+        message: openpgp.message.fromBinary(input_file),
+        publicKeys: (await openpgp.key.readArmored(pubkey)).keys,
         armor: false
     };
 
@@ -148,20 +92,17 @@ async function encryptFile(input_file)
 
 async function decryptFile(encrypted)
 {
-    await openpgp.initWorker({ path:'openpgp.worker.js' });
+    let privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0];
+    await privKeyObj.decrypt(passphrase);
 
     const options = {
-        message: await openpgp.message.fromBinary(encrypted),    // parse armored message
-        //publicKeys: (await openpgp.key.readArmored(pubkey)).keys, // for verification (optional)
-        //privateKeys: (await openpgp.key.readArmored(privkey)).keys,                                 // for decryption
-        //sessionKeys: { data:encrypted, algorithm:'rsa_encrypt_sign' },
-        passwords: ['secret'],
+        message: await openpgp.message.read(encrypted),    // parse armored message
+        privateKeys: privKeyObj,
         armor: false
     };
 
     return openpgp.decrypt(options).then(plaintext => {
-        console.log(plaintext);
-        return plaintext.data; // 'Hello, World!'
+        return plaintext.data;
     });
 }
 
@@ -169,17 +110,14 @@ function loadPublicKey(public_key) {
     pubkey = public_key;
 }
 
-function buf2hex(buffer) { // buffer is an ArrayBuffer
+function buf2hex(buffer) {
     return Array.prototype.map.call(new Uint8Array(buffer), x => ('00' + x.toString(16)).slice(-2)).join('');
 }
 
-encryptFile(new Uint8Array([0x01, 0x01, 0x01])).then(function(result) {
-    console.log(buf2hex(result.buffer));
-    console.log(result);
-    return result;
-}).then(function(result) {
-    decryptFile(result).then(function(plaintext) {
-        console.log(plaintext);
-        console.log(buf2hex(plaintext.buffer));
-    });
-});
+function convertBinaryStringToUint8Array(bStr) {
+    var i, len = bStr.length, u8_array = new Uint8Array(len);
+    for (var i = 0; i < len; i++) {
+        u8_array[i] = bStr.charCodeAt(i);
+    }
+    return u8_array;
+}
