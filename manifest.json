@@ -5,10 +5,10 @@
   "version": "0.1",
   "description": "Utility plugin for encrypting files. Takes a key and file as input and outputs an encrypted file.",
   "permissions": [
-	"tabs"
+	    "activeTab"
   ],
 
-  "sidebar_action": {
+ "sidebar_action": {
 	  "default_icon":"icons/004-encryption.png",
 	  "default_title":"securedrop-e2e",
 	  "default_panel":"src/securedrop-e2e.html"
