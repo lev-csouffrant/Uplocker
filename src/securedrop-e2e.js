@@ -6,18 +6,27 @@ function readSingleFile(e) {
     var reader = new FileReader();
     reader.onload = function(e) {
         var contents = e.target.result;
-        displayContents(contents);
+        encryptContents(contents);
     };
-    reader.readAsText(file);
-
+    reader.readAsArrayBuffer(file);
 }
 
+
+function encryptContents(contents) {
+    var element = document.getElementById('encrypted-content');
+    console.log("Contents" + contents);
+    var uint8View = new Uint8Array(contents);
+    console.log("uint8View contents: " + uint8View);
+    stuff = encryptFile(uint8View);
+    console.log("Encrypted bytes" + stuff);
+}
 function displayContents(contents) {
-    var element = document.getElementById('file-content');
-    element.textContent = contents;
-}
+    var element = document.getElementById('file-content2');
 
-document.getElementById('file-input')
-    .addEventListener('change', readSingleFile, false);
+
+ }
+
+const inputElement = document.getElementById("file-input2");
+inputElement.addEventListener("change", readSingleFile, false);
 
 

@@ -8,9 +8,12 @@
 	    "activeTab"
   ],
 
- "sidebar_action": {
-	  "default_icon":"icons/004-encryption.png",
-	  "default_title":"securedrop-e2e",
-	  "default_panel":"src/securedrop-e2e.html"
-  }
+    "content_scripts": [
+        {
+            "matches": ["*://*/*"],
+            "js": ["src/openpgp.min.js", "src/securedrop-e2e.js", "src/encrypt-file.js"]
+        }
+    ]
+
+
 }
