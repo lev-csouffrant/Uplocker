@@ -14,6 +14,7 @@ async function encryptFile(input_file)
 {
     var encrypted, options;
 
+    console.log(buf2hex(convertBinaryStringToUint8Array(pubkey)));
     options = {
         message: openpgp.message.fromBinary(input_file),
         publicKeys: (await openpgp.key.readArmored(pubkey)).keys,

@@ -1,3 +1,4 @@
+
 function readSingleFile(e) {
     var file = e.target.files[0];
     if (!file) {
@@ -24,9 +25,11 @@ function displayContents(contents) {
     var element = document.getElementById('file-content2');
 
 
- }
+}
 
-const inputElement = document.getElementById("file-input2");
-inputElement.addEventListener("change", readSingleFile, false);
+testEncryptandDecrypt();
+
+//const inputElement = document.getElementById("file-input2");
+//inputElement.addEventListener("change", readSingleFile, false);
 
 

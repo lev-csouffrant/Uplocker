@@ -68,11 +68,16 @@ var private_key =
 const key_passphrase = 'hello world';
 
 function testEncryptandDecrypt() {
+    console.log("in testEncryptandDecrypt");
     loadPublicKey(public_key);
+    console.log("after loading pub key");
     loadPrivateKey(private_key);
+    console.log("after loading priv key");
     loadPassphrase(key_passphrase);
+    console.log("after loading passphrase");
 
     var input_file = new Uint8Array([0x01, 0x01, 0x01]);
+
     console.log("Encrypting: " + buf2hex(input_file));
 
     encryptFile(input_file).then(function(result) {
@@ -86,3 +91,5 @@ function testEncryptandDecrypt() {
         });
     });
 }
+
+testEncryptandDecrypt();
