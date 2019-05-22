@@ -67,6 +67,8 @@ var private_key =
 
 const key_passphrase = 'hello world';
 
+
+
 function testEncryptandDecrypt() {
     console.log("in testEncryptandDecrypt");
     loadPublicKey(public_key);
@@ -91,5 +93,6 @@ function testEncryptandDecrypt() {
         });
     });
 }
+
 
 testEncryptandDecrypt();

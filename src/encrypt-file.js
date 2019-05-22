@@ -8,6 +8,7 @@ var privkey =
 
 var passphrase = "";
 
+
 // Takes a Uint8Array encoded file and returns it encrypted as an Uint8Array
 // Right now we are encrypting file blobs, we want to look into using streams.
 async function encryptFile(input_file)
@@ -21,6 +22,7 @@ async function encryptFile(input_file)
         armor: false
     };
 
+    console.log("publicKeys is: " + options.publicKeys);
     return openpgp.encrypt(options).then(function(ciphertext) {
         encrypted = ciphertext.message.packets.write(); // get raw encrypted packets as Uint8Array
         return encrypted;
@@ -66,3 +68,5 @@ function convertBinaryStringToUint8Array(bStr) {
     }
     return u8_array;
 }
+
+
