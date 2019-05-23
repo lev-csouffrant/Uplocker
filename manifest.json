@@ -1,17 +1,9 @@
 {
-
   "manifest_version": 2,
   "name": "securedrop-e2e",
   "version": "0.1",
   "description": "Utility plugin for encrypting files. Takes a key and file as input and outputs an encrypted file.",
-    "permissions": [
-        "*://*/*",
-	    "activeTab"
-    ],
-
   "background": {
       "scripts": ["src/openpgp.min.js", "src/encrypt-file.js", "test/tests.js"]
   }
-
-
 }
