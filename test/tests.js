@@ -107,6 +107,7 @@ function EncryptandDecrypt(context_input, csrf_token) {
         var formData = new FormData();
         var blob = new Blob([result]);
         console.log(blob);
+        formData.append("csrf_token", csrf_token);
         formData.append("encryptedfile", blob);
 
         var xhr = new XMLHttpRequest();
