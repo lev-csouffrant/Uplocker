@@ -15,14 +15,12 @@ async function encryptFile(input_file)
 {
     var encrypted, options;
 
-    console.log(buf2hex(convertBinaryStringToUint8Array(pubkey)));
     options = {
         message: openpgp.message.fromBinary(input_file),
         publicKeys: (await openpgp.key.readArmored(pubkey)).keys,
         armor: false
     };
 
-    console.log("publicKeys is: " + options.publicKeys);
     return openpgp.encrypt(options).then(function(ciphertext) {
         encrypted = ciphertext.message.packets.write(); // get raw encrypted packets as Uint8Array
         return encrypted;
@@ -68,5 +66,3 @@ function convertBinaryStringToUint8Array(bStr) {
     }
     return u8_array;
 }
-
-

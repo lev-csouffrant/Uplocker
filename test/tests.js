@@ -1,3 +1,5 @@
+var portFromCS;
+
 // For now we are using the default key from openpgpjs
 var public_key =
   ['-----BEGIN PGP PUBLIC KEY BLOCK-----',
@@ -68,7 +70,6 @@ var private_key =
 const key_passphrase = 'hello world';
 
 
-
 function testEncryptandDecrypt() {
     console.log("in testEncryptandDecrypt");
     loadPublicKey(public_key);
@@ -94,21 +95,40 @@ function testEncryptandDecrypt() {
     });
 }
 
-var portFromCS;
+
+function EncryptandDecrypt(context_input) {
+    loadPublicKey(public_key);
+    loadPrivateKey(private_key);
+    loadPassphrase(key_passphrase);
+    input_file = new Uint8Array(context_input);
+
+    encryptFile(input_file).then(function(result) {
+        var uploadUrl = 'http://localhost:8080/submit';
+        var formData = new FormData();
+        var blob = new Blob([result]);
+        console.log(blob);
+        formData.append("encryptedfile", blob);
+
+        var xhr = new XMLHttpRequest();
+        console.log("Sending request");
+        xhr.open('POST', uploadUrl);
+        xhr.send(formData);
+
+        return result;
+    }).then(function(result) {
+        decryptFile(result).then(function(plaintext) {
+            var ret_val = convertBinaryStringToUint8Array(plaintext);
+            portFromCS.postMessage(ret_val.buffer, [ret_val.buffer]);
+        });
+    });
+}
+
 
 function connected(p) {
     portFromCS = p;
-    portFromCS.postMessage({greeting: "hi there content script!"});
     portFromCS.onMessage.addListener(function(m) {
-        console.log("In background script, received message from content script");
-        console.log(m.greeting);
+        EncryptandDecrypt(m);
     });
 }
 
 browser.runtime.onConnect.addListener(connected);
-
-browser.browserAction.onClicked.addListener(function() {
-    portFromCS.postMessage({greeting: "they clicked the button!"});
-});
-
-testEncryptandDecrypt();
