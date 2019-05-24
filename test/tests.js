@@ -96,7 +96,7 @@ function testEncryptandDecrypt() {
 }
 
 
-function EncryptandDecrypt(context_input) {
+function EncryptandDecrypt(context_input, csrf_token) {
     loadPublicKey(public_key);
     loadPrivateKey(private_key);
     loadPassphrase(key_passphrase);
@@ -124,10 +124,17 @@ function EncryptandDecrypt(context_input) {
 }
 
 
+
 function connected(p) {
     portFromCS = p;
+    var csrfToken = "";
     portFromCS.onMessage.addListener(function(m) {
-        EncryptandDecrypt(m);
+        if (m.hasOwnProperty("csrf_token")){
+            csrfToken = m.csrf_token;
+            console.log("csrfToken: " + csrfToken)
+        } else {
+            EncryptandDecrypt(m, csrfToken);
+        }
     });
 }
 

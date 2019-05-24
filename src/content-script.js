@@ -21,5 +21,12 @@ function readSingleFile(e) {
 }
 
 // TODO: getElementsByName returns a list. Redo with type and listen on all input elements.
-const inputElement = document.getElementsByName("fh")[0]; 
+
+
+
+const inputElement = document.getElementsByName("fh")[0];
+const csrfElement = document.getElementsByName("csrf_token")[0];
+
+myPort.postMessage({csrf_token : csrfElement.value});
+
 inputElement.addEventListener("change", readSingleFile, false);
