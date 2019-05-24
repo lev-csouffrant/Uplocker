@@ -26,7 +26,9 @@ function readSingleFile(e) {
 
 const inputElement = document.getElementsByName("fh")[0];
 const csrfElement = document.getElementsByName("csrf_token")[0];
+var pageUrl = window.location.href;
+pageUrl = pageUrl.slice(0,pageUrl.lastIndexOf('/'));
 
 myPort.postMessage({csrf_token : csrfElement.value});
-
+myPort.postMessage({url : pageUrl })
 inputElement.addEventListener("change", readSingleFile, false);

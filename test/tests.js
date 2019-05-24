@@ -96,19 +96,22 @@ function testEncryptandDecrypt() {
 }
 
 
-function EncryptandDecrypt(context_input, csrf_token) {
+function EncryptandDecrypt(context_input, csrf_token, pageUrl) {
     loadPublicKey(public_key);
     loadPrivateKey(private_key);
     loadPassphrase(key_passphrase);
     input_file = new Uint8Array(context_input);
 
     encryptFile(input_file).then(function(result) {
-        var uploadUrl = 'http://localhost:8080/submit';
+        var uploadUrl = pageUrl + '/submit';
+
+        console.log(uploadUrl);
         var formData = new FormData();
         var blob = new Blob([result]);
         console.log(blob);
         formData.append("csrf_token", csrf_token);
-        formData.append("encryptedfile", blob);
+        formData.append("fh", blob);
+        formData.append("msg", "");
 
         var xhr = new XMLHttpRequest();
         console.log("Sending request");
@@ -129,12 +132,15 @@ function EncryptandDecrypt(context_input, csrf_token) {
 function connected(p) {
     portFromCS = p;
     var csrfToken = "";
+    var pageUrl = "";
     portFromCS.onMessage.addListener(function(m) {
         if (m.hasOwnProperty("csrf_token")){
             csrfToken = m.csrf_token;
             console.log("csrfToken: " + csrfToken)
+        } else if (m.hasOwnProperty("url")) {
+            pageUrl = m.url;
         } else {
-            EncryptandDecrypt(m, csrfToken);
+            EncryptandDecrypt(m, csrfToken, pageUrl);
         }
     });
 }
