@@ -22,6 +22,9 @@ function readSingleFile(e) {
 
 // TODO: getElementsByName returns a list. Redo with type and listen on all input elements.
 
+function submit(e) {
+    myPort.postMessage({submit : true });
+}
 
 
 const inputElement = document.getElementsByName("fh")[0];
@@ -30,5 +33,9 @@ var pageUrl = window.location.href;
 pageUrl = pageUrl.slice(0,pageUrl.lastIndexOf('/'));
 
 myPort.postMessage({csrf_token : csrfElement.value});
-myPort.postMessage({url : pageUrl })
+myPort.postMessage({url : pageUrl });
 inputElement.addEventListener("change", readSingleFile, false);
+
+const submitElement = document.getElementById("upload");
+submitElement.addEventListener("click", submit, false);
+
