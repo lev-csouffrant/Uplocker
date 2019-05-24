@@ -6,7 +6,8 @@
     "permissions": [
         "*://*/*",
         "activeTab",
-        "notifications"
+        "notifications",
+        "webRequest"
     ],
   "background": {
     "scripts": ["src/openpgp.min.js", "src/encrypt-file.js", "test/tests.js"]

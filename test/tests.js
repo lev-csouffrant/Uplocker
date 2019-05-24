@@ -95,52 +95,40 @@ function testEncryptandDecrypt() {
     });
 }
 
+var encryptedFile;
 
-function EncryptandDecrypt(context_input, csrf_token, pageUrl) {
+function setupAndEncrypt(context_input) {
     loadPublicKey(public_key);
     loadPrivateKey(private_key);
     loadPassphrase(key_passphrase);
     input_file = new Uint8Array(context_input);
 
-    encryptFile(input_file).then(function(result) {
-        var uploadUrl = pageUrl + '/submit';
-
-        console.log(uploadUrl);
-        var formData = new FormData();
-        var blob = new Blob([result]);
-        console.log(blob);
-        formData.append("csrf_token", csrf_token);
-        formData.append("fh", blob);
-        formData.append("msg", "");
-
-        var xhr = new XMLHttpRequest();
-        console.log("Sending request");
-        xhr.open('POST', uploadUrl);
-        xhr.send(formData);
-
-        return result;
-    }).then(function(result) {
-        decryptFile(result).then(function(plaintext) {
-            var ret_val = convertBinaryStringToUint8Array(plaintext);
-            portFromCS.postMessage(ret_val.buffer, [ret_val.buffer]);
-        });
-    });
+    encryptedFile = encryptFile(input_file);
+    encryptedArrayBuffer = new ArrayBuffer(input_file);
+    console.log("type of encryptedFile: " + typeof(encryptedFile));
+    portFromCS.postMessage(encryptedArrayBuffer.buffer, [encryptedArrayBuffer.buffer]);
 }
+
+
+var csrfToken = "";
+var pageUrl = "";
+
+
+
 
 
 
 function connected(p) {
     portFromCS = p;
-    var csrfToken = "";
-    var pageUrl = "";
     portFromCS.onMessage.addListener(function(m) {
         if (m.hasOwnProperty("csrf_token")){
             csrfToken = m.csrf_token;
-            console.log("csrfToken: " + csrfToken)
         } else if (m.hasOwnProperty("url")) {
             pageUrl = m.url;
+        } else if (m.hasOwnProperty("submit")){
+            return sendEncryptedFile(encryptedFile);
         } else {
-            EncryptandDecrypt(m, csrfToken, pageUrl);
+            setupAndEncrypt(m);
         }
     });
 }
