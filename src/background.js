@@ -1,3 +1,27 @@
+/* background.js
+* Listens for commands from content-script.js and asynchronously encrypts
+* the user's file using openpgp.js glue found in encrypt-file.js
+*/
+
+
+// Holds a reference to the encryptedFile which is done asynchronously.
+var encryptedFile;
+
+
+// Set up the listener to the content script
+// The two cases are user submitted or user selected a file
+function connected(portFromCS) {
+    portFromCS.onMessage.addListener(function(m) {
+        if (m.hasOwnProperty("submit")){
+            portFromCS.postMessage(encryptedFile.buffer, [encryptedFile.buffer]);
+        } else {
+            setupAndEncrypt(m);
+        }
+    });
+}
+browser.runtime.onConnect.addListener(connected);
+
+
 // For now we are using the default key from openpgpjs
 var public_key =
   ['-----BEGIN PGP PUBLIC KEY BLOCK-----',
@@ -69,28 +93,14 @@ var private_key =
 const key_passphrase = 'hello world';
 
 
-// Test routine to encrypt and decrypt the Uint8Array [0x01,0x01,0x01]
-function testEncryptandDecrypt() {
-    console.log("in testEncryptandDecrypt");
+// Kick off the file encryption process with openpgp.js
+function setupAndEncrypt(context_input) {
     loadPublicKey(public_key);
-    console.log("after loading pub key");
     loadPrivateKey(private_key);
-    console.log("after loading priv key");
     loadPassphrase(key_passphrase);
-    console.log("after loading passphrase");
-
-    var input_file = new Uint8Array([0x01, 0x01, 0x01]);
-
-    console.log("Encrypting: " + buf2hex(input_file));
+    input_file = new Uint8Array(context_input);
 
     encryptFile(input_file).then(function(result) {
-        console.log("Encrypted bytes: " + buf2hex(result.buffer));
-        return result;
-    }).then(function(result) {
-        decryptFile(result).then(function(plaintext) {
-            console.log("Plaintext string: " + plaintext);
-            var plaintext_array = convertBinaryStringToUint8Array(plaintext);
-            console.log("Plaintext bytes: " + buf2hex(plaintext_array));
-        });
+        encryptedFile = result;
     });
 }

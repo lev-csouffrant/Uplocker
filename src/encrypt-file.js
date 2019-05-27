@@ -1,10 +1,18 @@
+/* encrypt-file.js
+* This contains the glue for openpgp.js to encrypt a file.
+*/
+
+
+// References to key material to encrypt the file with.
 var pubkey =
     `-----BEGIN PGP PUBLIC KEY BLOCK-----
 -----END PGP PUBLIC KEY BLOCK-----`;
 
+
 var privkey =
     `-----BEGIN PGP PRIVATE KEY BLOCK-----
 -----END PGP PRIVATE KEY BLOCK-----`;
+
 
 var passphrase = "";
 
@@ -27,6 +35,8 @@ async function encryptFile(input_file)
     });
 }
 
+
+// File decryption. This is only here for test purposes.
 async function decryptFile(encrypted)
 {
     let privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0];
@@ -43,22 +53,30 @@ async function decryptFile(encrypted)
     });
 }
 
+// Helper functions to load the key parameters
 function loadPublicKey(public_key) {
     pubkey = public_key;
 }
+
 
 function loadPrivateKey(private_key) {
     privkey = private_key;
 }
 
+
 function loadPassphrase(key_passphrase) {
     passphrase = key_passphrase;
 }
 
+
+// Helper function to print buffers as hex values. This is for testing purposes.
 function buf2hex(buffer) {
-    return Array.prototype.map.call(new Uint8Array(buffer), x => ('00' + x.toString(16)).slice(-2)).join('');
+    return Array.prototype.map.call(new Uint8Array(buffer), x =>
+                                    ('00' + x.toString(16)).slice(-2)).join('');
 }
 
+
+// Helper function to convert a string to Uint8Array. This is for testing purposes.
 function convertBinaryStringToUint8Array(bStr) {
     var i, len = bStr.length, u8_array = new Uint8Array(len);
     for (var i = 0; i < len; i++) {

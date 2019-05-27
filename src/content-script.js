@@ -1,17 +1,18 @@
-var myPort = browser.runtime.connect({name:"port-from-cs"});
+/* content-script.js
+* Handles the DOM and network maniuplation for the browser plugin.
+* Intercepts the file picker and submit button to communicate with
+* the background.js script that encrypts the file for the user.
+*/
 
 
-//myPort.postMessage(uInt8Array.buffer, [uInt8Array.buffer]);
-//myPort.postMessage({greeting: long_str});
-
-
+// Opens a file reader to pick a file for encryption
 function readSingleFile(e) {
     var file = e.target.files[0];
     if (!file) {
         return;
     }
-    var reader = new FileReader();
 
+    var reader = new FileReader();
     reader.onload = function(e) {
         var uInt8Array = new Uint8Array(e.target.result);
         myPort.postMessage(uInt8Array.buffer, [uInt8Array.buffer]);
@@ -20,52 +21,63 @@ function readSingleFile(e) {
     reader.readAsArrayBuffer(file);
 }
 
-// TODO: getElementsByName returns a list. Redo with type and listen on all input elements.
+
+// Signals to the background to grab encrypted file
+function submitFile() {
+    myPort.postMessage({submit : "" });
+}
 
 
+// Grabs the response and overwrites the document
+function readBody(xhr) {
+    var data;
 
-var file;
+    if (!xhr.responseType || xhr.responseType === "text") {
+        data = xhr.responseText;
+    } else if (xhr.responseType === "document") {
+        data = xhr.responseXML;
+    } else {
+        data = xhr.response;
+    }
 
-function sendEncryptedFile(e) {
-    e.preventDefault();
-    console.log("sending encrypted file");
-    var uploadUrl = pageUrl + '/submit';
+    document.body.innerHTML = data;
+}
 
-    console.log(uploadUrl);
+
+// Retrieves the encrypted file and sends to the server
+function receiveEncryptedFile(context_input) {
+    var msgElement = document.getElementsByName("msg")[0];
+    var csrfElement = document.getElementsByName("csrf_token")[0];
+    var blob = new Blob([context_input]);
+
     var formData = new FormData();
-    console.log("after formdata")
-    var blob = new Blob(["BBBBBBB"]);
-    console.log(blob);
     formData.append("csrf_token", csrfElement.value);
+    formData.append("msg", msgElement.value);
     formData.append("fh", blob);
-    formData.append("msg", "");
 
-    console.log("befoerXMLHTTPRequest");
     var xhr = new content.XMLHttpRequest();
-    console.log("Sending file: " + file);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            readBody(xhr);
+        }
+    };
     xhr.open('POST', '/submit');
     xhr.send(formData);
-    console.log("after send");
-    return result;
 }
 
-function receiveEncryptedFile(context_input) {
-    console.log("received encrypted file: " + context_input);
-    file = context_input;
-}
 
-const inputElement = document.getElementsByName("fh")[0];
-const csrfElement = document.getElementsByName("csrf_token")[0];
-var pageUrl = window.location.href;
-pageUrl = pageUrl.slice(0,pageUrl.lastIndexOf('/'));
-
-myPort.postMessage({csrf_token : csrfElement.value});
-myPort.postMessage({url : pageUrl });
+// Set up the document listeners
+var inputElement = document.getElementsByName("fh")[0];
 inputElement.addEventListener("change", readSingleFile, false);
+var myPort = browser.runtime.connect({name:"port-from-cs"});
+myPort.onMessage.addListener(function(m) {
+    receiveEncryptedFile(m);
+})
 
-const submitElement = document.getElementById("submit-doc-button");
-submitElement.addEventListener("click", sendEncryptedFile, false);
 
-
-myPort.onMessage.addListener(receiveEncryptedFile);
-
+// Suppresses the submit button on the form
+var myForm = document.getElementById('upload');
+myForm.addEventListener('submit', event => {
+    event.preventDefault();
+    submitFile();
+});
