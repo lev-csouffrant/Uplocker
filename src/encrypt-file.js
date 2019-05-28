@@ -67,20 +67,3 @@ function loadPrivateKey(private_key) {
 function loadPassphrase(key_passphrase) {
     passphrase = key_passphrase;
 }
-
-
-// Helper function to print buffers as hex values. This is for testing purposes.
-function buf2hex(buffer) {
-    return Array.prototype.map.call(new Uint8Array(buffer), x =>
-                                    ('00' + x.toString(16)).slice(-2)).join('');
-}
-
-
-// Helper function to convert a string to Uint8Array. This is for testing purposes.
-function convertBinaryStringToUint8Array(bStr) {
-    var i, len = bStr.length, u8_array = new Uint8Array(len);
-    for (var i = 0; i < len; i++) {
-        u8_array[i] = bStr.charCodeAt(i);
-    }
-    return u8_array;
-}

@@ -75,6 +75,11 @@ myPort.onMessage.addListener(function(m) {
 })
 
 
+// Transfer public key to background for encrypting
+var pgpKeyElement = document.getElementsByName("pgp_key")[0].value;
+myPort.postMessage({public_key : pgpKeyElement})
+
+
 // Suppresses the submit button on the form
 var myForm = document.getElementById('upload');
 myForm.addEventListener('submit', event => {

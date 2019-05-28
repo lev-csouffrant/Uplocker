@@ -1,4 +1,5 @@
 // For now we are using the default key from openpgpjs
+// We should switch this out with our own test keys...
 var public_key =
   ['-----BEGIN PGP PUBLIC KEY BLOCK-----',
   'Version: GnuPG v2.0.19 (GNU/Linux)',
@@ -67,6 +68,23 @@ var private_key =
 
 
 const key_passphrase = 'hello world';
+
+
+// Helper function to print buffers as hex values.
+function buf2hex(buffer) {
+    return Array.prototype.map.call(new Uint8Array(buffer), x =>
+                                    ('00' + x.toString(16)).slice(-2)).join('');
+}
+
+
+// Helper function to convert a string to Uint8Array.
+function convertBinaryStringToUint8Array(bStr) {
+    var i, len = bStr.length, u8_array = new Uint8Array(len);
+    for (var i = 0; i < len; i++) {
+        u8_array[i] = bStr.charCodeAt(i);
+    }
+    return u8_array;
+}
 
 
 // Test routine to encrypt and decrypt the Uint8Array [0x01,0x01,0x01]
