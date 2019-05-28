@@ -29,11 +29,12 @@ var public_key = "";
 
 
 // Kick off the file encryption process with openpgp.js
+// File is compressed first to reduce bandwidth for user
 function setupAndEncrypt(context_input) {
     loadPublicKey(public_key);
     input_file = new Uint8Array(context_input);
-
-    encryptFile(input_file).then(function(result) {
+    var compressed = pako.deflate(input_file);
+    encryptFile(compressed).then(function(result) {
         encryptedFile = result;
     });
 }
