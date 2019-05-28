@@ -5,6 +5,27 @@
 */
 
 
+// Obtain metadata about required elements to parse from the doc
+var myPort;
+var pgpKey = document.getElementsByName("e2e_plugin_pgp_key")[0].value;
+var formNameElement = document.getElementsByName("e2e_plugin_form_name")[0].value;
+var fileEncryptElement = document.getElementsByName("e2e_plugin_file_encrypt")[0].value;
+
+
+// Optionally allow for encrypted messages and extra unencrypted items to send (i.e. csrf tokens)
+var stringEncryptList;
+var extraItemList;
+var stringEncryptElement = document.getElementsByName("e2e_plugin_string_encrypt");
+var extraItemElement = document.getElementsByName("e2e_plugin_extra_items");
+if (stringEncryptElementList) {
+    stringEncryptList = stringEncryptElementList[0].value.split(',');
+
+}
+if (extraItemElementList) {
+    extraItemList = extraItemElementList[0].value.split(',');
+}
+
+
 // Opens a file reader to pick a file for encryption
 function readSingleFile(e) {
     var file = e.target.files[0];
@@ -46,14 +67,16 @@ function readBody(xhr) {
 
 // Retrieves the encrypted file and sends to the server
 function receiveEncryptedFile(context_input) {
-    var msgElement = document.getElementsByName("msg")[0];
-    var csrfElement = document.getElementsByName("csrf_token")[0];
     var blob = new Blob([context_input]);
-
     var formData = new FormData();
-    formData.append("csrf_token", csrfElement.value);
-    formData.append("msg", msgElement.value);
-    formData.append("fh", blob);
+
+    for(i = 0; i < extraItemList.length, i++) {
+        var tmpElement = document.getElementsByName(extraItemList[i]);
+        if(tmpElement) {
+            formData.append(extraItemList[i], tmpElement[0].value);
+        }
+    }
+    formData.append(fileEncryptElement, blob);
 
     var xhr = new content.XMLHttpRequest();
     xhr.onreadystatechange = function() {
@@ -67,22 +90,18 @@ function receiveEncryptedFile(context_input) {
 
 
 // Set up the document listeners
-var inputElement = document.getElementsByName("fh")[0];
+var inputElement = document.getElementsByName(fileEncryptElement)[0];
 inputElement.addEventListener("change", readSingleFile, false);
-var myPort = browser.runtime.connect({name:"port-from-cs"});
+myPort = browser.runtime.connect({name:"port-from-cs"});
 myPort.onMessage.addListener(function(m) {
     receiveEncryptedFile(m);
 })
-
-
-// Transfer public key to background for encrypting
-var pgpKeyElement = document.getElementsByName("pgp_key")[0].value;
-myPort.postMessage({public_key : pgpKeyElement})
+myPort.postMessage({public_key : pgpKey})
 
 
 // Suppresses the submit button on the form
-var myForm = document.getElementById('upload');
-myForm.addEventListener('submit', event => {
+var submitForm = document.getElementById(formNameElement);
+submitForm.addEventListener('submit', event => {
     event.preventDefault();
     submitFile();
 });

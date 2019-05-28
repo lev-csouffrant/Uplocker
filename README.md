@@ -1,12 +1,31 @@
 # securedrop-e2e-browser-plugin
 Browser Plugin Prototype for E2E in Securedrop
 
-Currently supports encrypting files in Securedrop with a PGP key loaded from a form field. In order to do this, modify source_templates/lookup.html to include a hidden element on the "upload" form named "pgp_key" with the public key to encrypt with
+Currently supports encrypting files in websites with a PGP key. Can only work with websites that contain the required tags embedded in the page described below, as well as forms that only submit a single file.
+
+## How To Use: ##
+To install the plugin, open up firefox and visit about:debugging. From here you can click "Load Temporary add-on" and load the manifest.json file.
+
+To support the plugin on the server you need to provide a few HTML tags (such as meta tags) with the proper name and value pairs. Currently the tags supported are:
+
+* e2e_plugin_pgp_key : The public PGP key to encrypt with
+* e2e_plugin_form_name : The name of the form to intercept
+* e2e_plugin_file_encrypt : The name of the element for the filepicker
+* e2e_plugin_extra_items : Additional form elements that need to be submitted (such as CSRF tokens)
+* [NOT SUPPORTED YET] e2e_plugin_string_encrypt : Additional form elements that need to be submitted as encrypted strings
+
+As an example of how to support this in Securedrop, add the following code to lookup.html (the PGP key needs to be provided as a render argument in Flask):
+
+```
+<meta name="e2e_plugin_pgp_key" value = "{{ pgp_key }}">
+<meta name="e2e_plugin_form_name" value = "upload">
+<meta name="e2e_plugin_file_encrypt" value = "fh">
+<meta name="e2e_plugin_extra_items" value = "csrf_token,msg">
+```
 
 ## TODO: ##
-* Support more generic forms (is that possible to detect CSRF tokens arbitrarily?)
 * Clean up code a bit further, i.e. measuring performance and writing more tests
-* The message field needs encrypted as well, not sure how that should be handled on the server side
+* The message field needs encrypted as well, add support for e2e_plugin_string_encrypt
 
 ## Tests worried about: ##
 * Asynchronous encryption can lead to UX requirements that's not handled if submit is clicked before test is completed. This should notify the user "file still encrypting" or something
