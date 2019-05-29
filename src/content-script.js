@@ -7,22 +7,25 @@
 
 // Obtain metadata about required elements to parse from the doc
 var myPort;
-var pgpKey = document.getElementsByName("e2e_plugin_pgp_key")[0].value;
-var formNameElement = document.getElementsByName("e2e_plugin_form_name")[0].value;
-var fileEncryptElement = document.getElementsByName("e2e_plugin_file_encrypt")[0].value;
+var pgpKey = document.getElementsByName("e2e_plugin_pgp_key")[0].content;
+var formNameElement = document.getElementsByName("e2e_plugin_form_name")[0].content;
+var fileEncryptElement = document.getElementsByName("e2e_plugin_file_encrypt")[0].content;
 
 
 // Optionally allow for encrypted messages and extra unencrypted items to send (i.e. csrf tokens)
-var stringEncryptList;
-var extraItemList;
+var stringEncryptList = {};
+var extraItemList = {};
 var stringEncryptElement = document.getElementsByName("e2e_plugin_string_encrypt");
 var extraItemElement = document.getElementsByName("e2e_plugin_extra_items");
-if (stringEncryptElementList) {
-    stringEncryptList = stringEncryptElementList[0].value.split(',');
 
+var tmpList = stringEncryptElement[0].content.split(',');
+for(var i = 0; i < tmpList.length; i++) {
+    stringEncryptList[tmpList[i]] = document.getElementsByName(tmpList[i])[0];
 }
-if (extraItemElementList) {
-    extraItemList = extraItemElementList[0].value.split(',');
+
+tmpList = extraItemElement[0].content.split(',');
+for(var i = 0; i < tmpList.length; i++) {
+    extraItemList[tmpList[i]] = document.getElementsByName(tmpList[i])[0];
 }
 
 
@@ -70,13 +73,15 @@ function receiveEncryptedFile(context_input) {
     var blob = new Blob([context_input]);
     var formData = new FormData();
 
-    for(i = 0; i < extraItemList.length, i++) {
-        var tmpElement = document.getElementsByName(extraItemList[i]);
-        if(tmpElement) {
-            formData.append(extraItemList[i], tmpElement[0].value);
-        }
-    }
     formData.append(fileEncryptElement, blob);
+
+    for(key in extraItemList) {
+        formData.append(key, extraItemList[key].value);
+    }
+
+    for(key in stringEncryptList) {
+        formData.append(key, stringEncryptList[key].value);
+    }
 
     var xhr = new content.XMLHttpRequest();
     xhr.onreadystatechange = function() {
