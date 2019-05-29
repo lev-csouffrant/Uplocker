@@ -6,7 +6,7 @@
 
 var encryptedFile;
 var receivedFile = false;
-var public_key = "";
+var publicKey = "";
 var portFromCS;
 
 
@@ -37,9 +37,9 @@ function connected(p) {
                 portFromCS.postMessage("");
             }
         } else if (m.hasOwnProperty("public_key")) {
-            public_key = m["public_key"];
+            publicKey = m["public_key"];
             receivedFile = false;
-            loadPublicKey(public_key);
+            loadPublicKey(publicKey);
         } else if (m.hasOwnProperty("encrypt_string")) {
             encryptElementString(m["string_name"],m["encrypt_string"]);
         } else {
@@ -52,18 +52,18 @@ browser.runtime.onConnect.addListener(connected);
 
 
 // Encrypt the provided string and return to the content script
-function encryptElementString(string_name, encrypt_string) {
-    encryptString(encrypt_string).then(function(result) {
-        portFromCS.postMessage({name : string_name, encrypted_string : result});
+function encryptElementString(stringName, plaintextString) {
+    encryptString(plaintextString).then(function(result) {
+        portFromCS.postMessage({name : stringName, encrypted_string : result});
     });
 }
 
 
 // Kick off the file encryption process with openpgp.js
 // File is compressed first to reduce bandwidth for user
-function setupAndEncrypt(context_input) {
-    input_file = new Uint8Array(context_input);
-    var compressed = pako.deflate(input_file);
+function setupAndEncrypt(contextInput) {
+    inputFile = new Uint8Array(contextInput);
+    var compressed = pako.deflate(inputFile);
     encryptFile(compressed).then(function(result) {
         encryptedFile = result;
     });

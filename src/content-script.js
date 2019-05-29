@@ -125,11 +125,11 @@ function readBody(xhr) {
 
 
 // Retrieves the encrypted file and sends to the server
-function receiveEncryptedFile(context_input) {
-    var blob = new Blob([context_input]);
+function receiveEncryptedFile(contextInput) {
+    var blob = new Blob([contextInput]);
     var formData = new FormData();
 
-    if(context_input) {
+    if(contextInput) {
         formData.append(fileEncryptElement, blob);
     }
 

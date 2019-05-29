@@ -18,12 +18,12 @@ var passphrase = "";
 
 
 // Takes a Uint8Array encoded file and returns it encrypted as an Uint8Array
-async function encryptFile(input_file)
+async function encryptFile(inputFile)
 {
     var encrypted, options;
 
     options = {
-        message: openpgp.message.fromBinary(input_file),
+        message: openpgp.message.fromBinary(inputFile),
         publicKeys: (await openpgp.key.readArmored(pubkey)).keys,
         armor: false
     };
@@ -36,12 +36,12 @@ async function encryptFile(input_file)
 
 
 // Takes a string and returns it encrypted
-async function encryptString(input_string)
+async function encryptString(inputString)
 {
     var encrypted, options;
 
     options = {
-        message: openpgp.message.fromText(input_string),
+        message: openpgp.message.fromText(inputString),
         publicKeys: (await openpgp.key.readArmored(pubkey)).keys
     };
 
@@ -88,16 +88,16 @@ async function decryptString(encrypted)
 
 
 // Helper functions to load the key parameters
-function loadPublicKey(public_key) {
-    pubkey = public_key;
+function loadPublicKey(publicKey) {
+    pubkey = publicKey;
 }
 
 
-function loadPrivateKey(private_key) {
-    privkey = private_key;
+function loadPrivateKey(privateKey) {
+    privkey = privateKey;
 }
 
 
-function loadPassphrase(key_passphrase) {
-    passphrase = key_passphrase;
+function loadPassphrase(keyPassphrase) {
+    passphrase = keyPassphrase;
 }
