@@ -18,7 +18,6 @@ var passphrase = "";
 
 
 // Takes a Uint8Array encoded file and returns it encrypted as an Uint8Array
-// Right now we are encrypting file blobs, we want to look into using streams.
 async function encryptFile(input_file)
 {
     var encrypted, options;
@@ -30,7 +29,24 @@ async function encryptFile(input_file)
     };
 
     return openpgp.encrypt(options).then(function(ciphertext) {
-        encrypted = ciphertext.message.packets.write(); // get raw encrypted packets as Uint8Array
+        encrypted = ciphertext.message.packets.write();
+        return encrypted;
+    });
+}
+
+
+// Takes a string and returns it encrypted
+async function encryptString(input_string)
+{
+    var encrypted, options;
+
+    options = {
+        message: openpgp.message.fromText(input_string),
+        publicKeys: (await openpgp.key.readArmored(pubkey)).keys
+    };
+
+    return openpgp.encrypt(options).then(function(ciphertext) {
+        encrypted = ciphertext.data;
         return encrypted;
     });
 }
@@ -43,7 +59,7 @@ async function decryptFile(encrypted)
     await privKeyObj.decrypt(passphrase);
 
     const options = {
-        message: await openpgp.message.read(encrypted),    // parse armored message
+        message: await openpgp.message.read(encrypted),
         privateKeys: privKeyObj,
         armor: false
     };
@@ -52,6 +68,24 @@ async function decryptFile(encrypted)
         return plaintext.data;
     });
 }
+
+
+// String decryption. This is only here for test purposes.
+async function decryptString(encrypted)
+{
+    let privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0];
+    await privKeyObj.decrypt(passphrase);
+
+    const options = {
+        message: await openpgp.message.readArmored(encrypted),
+        privateKeys: privKeyObj
+    };
+
+    return openpgp.decrypt(options).then(plaintext => {
+        return plaintext.data;
+    });
+}
+
 
 // Helper functions to load the key parameters
 function loadPublicKey(public_key) {
