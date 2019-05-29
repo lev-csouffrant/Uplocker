@@ -1,4 +1,4 @@
-# PGP E2E Encryption Browser Plugin
+# Uplocker - PGP E2E Encryption Browser Plugin
 Browser Plugin Prototype for E2E Encryption
 
 Currently supports encrypting files in websites with a PGP key. Can only work
