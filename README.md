@@ -1,5 +1,5 @@
-# securedrop-e2e-browser-plugin
-Browser Plugin Prototype for E2E in Securedrop
+# PGP E2E Encryption Browser Plugin
+Browser Plugin Prototype for E2E Encryption
 
 Currently supports encrypting files in websites with a PGP key. Can only work
 with websites that contain the required tags embedded in the page described
@@ -9,7 +9,7 @@ This code is licensed under GNU Affero General Public License v3, but includes
 libraries with other licenses as defined in LICENSE-3RD-PARTY
 
 ## How To Use: ##
-To install the plugin, open up firefox and visit about:debugging. From here you
+To install the plugin, open up Firefox and visit about:debugging. From here you
 can click "Load Temporary add-on" and load the manifest.json file.
 
 To support the plugin on the server you need to provide a few HTML tags (such as
@@ -24,8 +24,9 @@ are:
 * e2e_plugin_string_encrypt : Additional form elements that need to be
 submitted as encrypted strings
 
-As an example of how to support this in Securedrop, add the following code to
-lookup.html (the PGP key needs to be provided as a render argument in Flask):
+As an example of how to support this in Securedrop (The project that motivated
+this extension), add the following code to lookup.html (the PGP key needs to be
+provided as a render argument in Flask):
 
 ```
 <meta name="e2e_plugin_pgp_key" content = "{{ pgp_key }}">
@@ -49,7 +50,8 @@ objects which hopefully passed by reference
 * Need to weigh if time + memory to compress outweighs the benefit of
 saving bandwidth
 
-Credits:
-Icon made by Pixelmeetup from www.flaticon.com
-Encryption using Openpgpjs library
-Compression using Pako library
+## Credits: ##
+
+* Icon made by Pixelmeetup from www.flaticon.com
+* Encryption using Openpgpjs library
+* Compression using Pako library
