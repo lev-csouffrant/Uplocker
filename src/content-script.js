@@ -13,7 +13,7 @@ var fileEncryptElement;
 var formEndpoint;
 
 
-// Optionally allow for encrypted messages and extra unencrypted items to send (i.e. csrf tokens)
+// Optionally allow extra encrypted and unencrypted items to send (i.e. csrf tokens)
 var encryptedStrings;
 var stringEncryptList;
 var extraItemList;
@@ -34,7 +34,9 @@ function initializeState() {
     stringEncryptElement = document.getElementsByName("e2e_plugin_string_encrypt");
     extraItemElement = document.getElementsByName("e2e_plugin_extra_items");
 
-    tmpList = stringEncryptElement[0].content.split(',');
+    // For some reason it wouldn't let me iterate elements in the submit handler
+    // Gathering references to the document elements here
+    var tmpList = stringEncryptElement[0].content.split(',');
     for(var i = 0; i < tmpList.length; i++) {
         stringEncryptList[tmpList[i]] = document.getElementsByName(tmpList[i])[0];
     }
@@ -64,7 +66,8 @@ function initializeState() {
         event.preventDefault();
         for(key in stringEncryptList) {
             if(stringEncryptList[key].value) {
-                myPort.postMessage({string_name : key, encrypt_string : stringEncryptList[key].value});
+                myPort.postMessage({string_name : key,
+                                    encrypt_string : stringEncryptList[key].value});
             } else {
                 encryptedStrings[key] = "";
             }
@@ -93,7 +96,8 @@ function readSingleFile(e) {
 
 // When all the strings are returned encrypted, we are finished
 function checkIfFinished() {
-    return Object.keys(encryptedStrings).length == Object.keys(stringEncryptList).length;
+    return Object.keys(encryptedStrings).length ==
+        Object.keys(stringEncryptList).length;
 }
 
 
@@ -125,11 +129,12 @@ function readBody(xhr) {
 
 
 // Retrieves the encrypted file and sends to the server
-function receiveEncryptedFile(context_input) {
-    var blob = new Blob([context_input]);
+// Also appends any extra form elements
+function receiveEncryptedFile(contextInput) {
+    var blob = new Blob([contextInput]);
     var formData = new FormData();
 
-    if(context_input) {
+    if(contextInput) {
         formData.append(fileEncryptElement, blob);
     }
 

@@ -10,10 +10,10 @@
         "webRequest"
     ],
   "background": {
-      "scripts": ["src/openpgp.min.js",
+      "scripts": ["lib/openpgp.min.js",
+                  "lib/pako_deflate.min.js",
                   "src/encrypt-file.js",
-                  "src/background.js",
-                  "src/pako_deflate.min.js"]
+                  "src/background.js"]
   },
   "browser_action": {},
   "content_scripts" : [
