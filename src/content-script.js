@@ -10,6 +10,7 @@ var myPort;
 var pgpKey;
 var formNameElement;
 var fileEncryptElement;
+var formEndpoint;
 
 
 // Optionally allow for encrypted messages and extra unencrypted items to send (i.e. csrf tokens)
@@ -58,6 +59,7 @@ function initializeState() {
 
     // Suppresses the submit button on the form
     var submitForm = document.getElementById(formNameElement);
+    formEndpoint = submitForm.action;
     submitForm.addEventListener('submit', event => {
         event.preventDefault();
         for(key in stringEncryptList) {
@@ -145,7 +147,7 @@ function receiveEncryptedFile(context_input) {
             readBody(xhr);
         }
     };
-    xhr.open('POST', '/submit');
+    xhr.open('POST', formEndpoint);
     xhr.send(formData);
 }
 
