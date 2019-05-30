@@ -20,9 +20,9 @@ are:
 * e2e_plugin_form_name : The name of the form to intercept
 * e2e_plugin_file_encrypt : The name of the element for the filepicker
 * e2e_plugin_extra_items : Additional form elements that need to be submitted
-(such as CSRF tokens)
+(such as CSRF tokens) as a comma seperated list
 * e2e_plugin_string_encrypt : Additional form elements that need to be
-submitted as encrypted strings
+submitted as encrypted strings as a comma seperated list
 
 As an example of how to support this in Securedrop (The project that motivated
 this extension), add the following code to lookup.html (the PGP key needs to be
@@ -42,6 +42,12 @@ provided as a render argument in Flask):
 submit is clicked before test is completed. This should notify the user
 "file still encrypting" or something. The best idea might be to have the plugin
 popup saying "file is currently encrypting"
+* With some fancy javascript it should be possible to iterate through all the
+form elements that will be submitted, thus removing the need for the extra_items
+and potentially the file_encrypt meta elements. (However forms with multiple file
+selects will need to be supported before that is possible)
+* Right now dependencies are hardcoded and there is no build process. Webpack
+should be used to support this in the future.
 
 ## Tests worried about: ##
 * Files might eat up 2-4x memory than the original size because they are
